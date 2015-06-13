@@ -34,5 +34,8 @@ libtool
 stamp-h1
 *.cache
 *.status
+thirdparty/*
+!thirdpary/install.sh
 config.h
 Makefile
+

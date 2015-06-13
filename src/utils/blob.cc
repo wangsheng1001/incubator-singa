@@ -297,27 +297,29 @@ void Blob<Dtype>::CopyFrom(const Blob& source, bool reshape) {
         sizeof(Dtype)*count_);
 }
 
-/*
+
 template <typename Dtype>
-void Blob<Dtype>::FromProto(const BlobProto& proto) {
-  Reshape();
+void Blob<Dtype>::FromProto(const singa::BlobProto& proto) {
+  //Reshape();
   // copy data
   Dtype* data_vec = mutable_cpu_data();
   for (int i = 0; i < count_; ++i) {
     data_vec[i] = proto.data(i);
   }
+  version_ = proto.version();
 }
-*/
+
 
 template <typename Dtype>
 void Blob<Dtype>::ToProto(singa::BlobProto* proto) const {
-  proto->set_num(shape_[0]);
-  if(shape_.size()>1)
-    proto->set_channels(shape_[1]);
-  if(shape_.size()>2)
-    proto->set_height(shape_[2]);
-  if(shape_.size()>3)
-    proto->set_width(shape_[3]);
+  //set verstion
+  proto->set_version(version_);
+  //set shape
+  proto->clear_shape();
+  for (int i = 0; i < (int)shape_.size(); ++i){
+    proto->add_shape(shape_[i]);
+  }
+  //set data
   proto->clear_data();
   const Dtype* data_vec = cpu_data();
   for (int i = 0; i < count_; ++i) {

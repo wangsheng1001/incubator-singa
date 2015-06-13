@@ -13,6 +13,7 @@ class Param {
  public:
   Param():data_(nullptr){}
   virtual ~Param(){};
+  
 
   virtual Msg* GenGetMsg(void* arg=nullptr);
   virtual Msg* GenPutMsg(void* arg=nullptr);
@@ -34,10 +35,19 @@ class Param {
    * setup param shape
    */
   virtual void Setup(const ParamProto& proto, const std::vector<int>& shape, int fan_in);
+  /**
+   * setup used during restore, the proto should contains shape and data as well;
+   */
+  virtual void Setup(const ParamProto& proto);
   /*
    * fill the data according to initmethod, i.e., random/gaussian/fixed value
    */
   virtual void Init(int v=0);
+  /*
+   * copy to a ParamProto object which will be dumped to disk when checkpointing
+   */
+  virtual void ToProto(ParamProto* proto) const;
+  
   void ShareData(shared_ptr<Param> other){
     proto_.set_owner(other->owner());
     if(data_!=nullptr)

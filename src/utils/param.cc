@@ -134,6 +134,26 @@ void Param::Setup(const ParamProto& proto, const vector<int>& shape,
   fan_in_=fan_in;
 }
 
+void Param::Setup(const ParamProto& proto){
+  CHECK(proto.has_data());
+  // get proto
+  proto_=proto;
+  // get shape
+  vector<int> shape;
+  const BlobProto& blob = proto_.data();
+  for (int i = 0; i < blob.shape_size(); ++i){
+    shape.push_back(blob.shape(i));
+  }
+  data_=std::make_shared<Blob<float>>(shape);
+  // set data
+  data_->FromProto(blob);
+  // clear used data
+  proto_.clear_data();
+  //fan_in_=fan_in;
+  grad_.Reshape(shape);
+  history_.Reshape(shape);
+}
+
 void Param::Init(int v){
   Tensor<cpu, 1> data(mutable_cpu_data(), Shape1(size()));
   unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -173,6 +193,13 @@ void Param::Init(int v){
     break;
   }
   set_version(v);
+}
+
+void Param::ToProto(ParamProto* proto) const{
+  //copy configuration
+  *proto = proto_;
+  //copy data
+  data_->ToProto(proto->mutable_data());
 }
 
 /**************************RandomSyncParam********************************

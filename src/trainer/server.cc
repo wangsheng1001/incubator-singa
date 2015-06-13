@@ -6,6 +6,7 @@
 #include "utils/singleton.h"
 #include "utils/factory.h"
 #include "utils/cluster.h"
+#include "utils/common.h"
 
 
 namespace singa {
@@ -99,6 +100,7 @@ void Server::Run(){
 bool Server::SyncNow(){
   return false;
 }
+
 Msg* Server::HandlePut(shared_ptr<Param> param, Msg **msg){
   return param->HandlePutMsg(msg);
 }
@@ -127,6 +129,38 @@ Msg* Server::HandleSyncRequest(shared_ptr<Param> param, Msg **msg){
 
 int Server::HandleSyncResponse(shared_ptr<Param> param, Msg **msg){
   return param->ParseSyncResponseMsg(msg);
+}
+
+void Server::Checkpoint(const std::string path, const std::map<int, shared_ptr<Param>> params){
+
+  ParamProtos proto;
+  
+  for (auto p : params){
+    p.second->ToProto(proto.add_params());
+  }
+ 
+  LOG(INFO) << "checkpoint to file: " << path;
+  WriteProtoToBinaryFile(proto, path.c_str());
+}
+
+void Server::Restore(const std::string path, std::map<int, shared_ptr<Param>>& params){
+
+  //params shoule be empty by now
+  CHECK_EQ(params.size(), 0);
+
+  ParamProtos proto;
+  LOG(INFO) << "restore from file: " << path;
+  ReadProtoFromBinaryFile(path.c_str(), &proto);
+ 
+  Factory<Param>* factory = Singleton<Factory<Param>>::Instance();
+  shared_ptr<Param> p;
+  for (int i = 0; i < proto.params_size(); ++i){ 
+    p = shared_ptr<Param>(factory->Create("Param"));
+    // get param from proto
+    p->Setup(proto.params(i));
+    // insert into map
+    params[p->id()] = p;
+  }
 }
 
 } /* singa */

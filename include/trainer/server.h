@@ -66,6 +66,17 @@ class Server{
    * TODO implement the Caffe's synchronization scheduler for data parallelism
    */
   virtual bool SyncNow();
+ 
+public:
+  /*
+   * Dump all params to a binary proto file
+   */
+  static void Checkpoint(const std::string path, const std::map<int, shared_ptr<Param>> params);
+
+  /*
+   * Restore params from a binary proto file
+   */
+  static void Restore(const std::string path, std::map<int, shared_ptr<Param>>& params);
 
  protected:
   int thread_id_,group_id_, server_id_;

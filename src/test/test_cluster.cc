@@ -13,6 +13,7 @@ void zk_cb(void *contest){
   LOG(INFO) << "zk callback: " << (char *)contest;
 }
 
+/*
 TEST(CluserRuntimeTest, ZooKeeper){
   ClusterRuntime* rt = new ZKClusterRT(host);
   ASSERT_EQ(rt->Init(), true);
@@ -25,6 +26,7 @@ TEST(CluserRuntimeTest, ZooKeeper){
   sleep(3);
   delete rt;
 }
+*/
 
 /**
 ClusterProto GenClusterProto(){

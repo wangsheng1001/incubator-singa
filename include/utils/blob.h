@@ -143,9 +143,7 @@ class Blob {
   const Dtype* gpu_data() const;
   Dtype* mutable_cpu_data();
   Dtype* mutable_gpu_data();
-  /*
-  void FromProto(const BlobProto& proto);
-  */
+  void FromProto(const singa::BlobProto& proto);
   void ToProto(singa::BlobProto* proto) const;
 
   /// @brief Compute the sum of absolute values (L1 norm) of the data.

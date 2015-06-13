@@ -37,6 +37,7 @@ void protobuf_ShutdownFile_model_2eproto();
 class ModelProto;
 class NetProto;
 class ParamProto;
+class ParamProtos;
 class BlobProtos;
 class LayerProto;
 class RGBImage;
@@ -856,18 +857,6 @@ class ParamProto : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 id() const;
   inline void set_id(::google::protobuf::int32 value);
 
-  // repeated int32 shape = 3;
-  inline int shape_size() const;
-  inline void clear_shape();
-  static const int kShapeFieldNumber = 3;
-  inline ::google::protobuf::int32 shape(int index) const;
-  inline void set_shape(int index, ::google::protobuf::int32 value);
-  inline void add_shape(::google::protobuf::int32 value);
-  inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
-      shape() const;
-  inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
-      mutable_shape();
-
   // optional int32 split_threshold = 4 [default = 5000000];
   inline bool has_split_threshold() const;
   inline void clear_split_threshold();
@@ -945,6 +934,15 @@ class ParamProto : public ::google::protobuf::Message {
   inline float weight_decay_multiplier() const;
   inline void set_weight_decay_multiplier(float value);
 
+  // optional .singa.BlobProto data = 15;
+  inline bool has_data() const;
+  inline void clear_data();
+  static const int kDataFieldNumber = 15;
+  inline const ::singa::BlobProto& data() const;
+  inline ::singa::BlobProto* mutable_data();
+  inline ::singa::BlobProto* release_data();
+  inline void set_allocated_data(::singa::BlobProto* data);
+
   // @@protoc_insertion_point(class_scope:singa.ParamProto)
  private:
   inline void set_has_name();
@@ -973,13 +971,14 @@ class ParamProto : public ::google::protobuf::Message {
   inline void clear_has_learning_rate_multiplier();
   inline void set_has_weight_decay_multiplier();
   inline void clear_has_weight_decay_multiplier();
+  inline void set_has_data();
+  inline void clear_has_data();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
   ::std::string* name_;
-  ::google::protobuf::RepeatedField< ::google::protobuf::int32 > shape_;
   ::google::protobuf::int32 id_;
   ::google::protobuf::int32 split_threshold_;
   ::google::protobuf::int32 partition_dim_;
@@ -992,12 +991,95 @@ class ParamProto : public ::google::protobuf::Message {
   float std_;
   float learning_rate_multiplier_;
   float weight_decay_multiplier_;
+  ::singa::BlobProto* data_;
   friend void  protobuf_AddDesc_model_2eproto();
   friend void protobuf_AssignDesc_model_2eproto();
   friend void protobuf_ShutdownFile_model_2eproto();
 
   void InitAsDefaultInstance();
   static ParamProto* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class ParamProtos : public ::google::protobuf::Message {
+ public:
+  ParamProtos();
+  virtual ~ParamProtos();
+
+  ParamProtos(const ParamProtos& from);
+
+  inline ParamProtos& operator=(const ParamProtos& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ParamProtos& default_instance();
+
+  void Swap(ParamProtos* other);
+
+  // implements Message ----------------------------------------------
+
+  ParamProtos* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ParamProtos& from);
+  void MergeFrom(const ParamProtos& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .singa.ParamProto params = 1;
+  inline int params_size() const;
+  inline void clear_params();
+  static const int kParamsFieldNumber = 1;
+  inline const ::singa::ParamProto& params(int index) const;
+  inline ::singa::ParamProto* mutable_params(int index);
+  inline ::singa::ParamProto* add_params();
+  inline const ::google::protobuf::RepeatedPtrField< ::singa::ParamProto >&
+      params() const;
+  inline ::google::protobuf::RepeatedPtrField< ::singa::ParamProto >*
+      mutable_params();
+
+  // @@protoc_insertion_point(class_scope:singa.ParamProtos)
+ private:
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::google::protobuf::RepeatedPtrField< ::singa::ParamProto > params_;
+  friend void  protobuf_AddDesc_model_2eproto();
+  friend void protobuf_AssignDesc_model_2eproto();
+  friend void protobuf_ShutdownFile_model_2eproto();
+
+  void InitAsDefaultInstance();
+  static ParamProtos* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -3676,38 +3758,29 @@ class BlobProto : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional int32 num = 1 [default = 0];
-  inline bool has_num() const;
-  inline void clear_num();
-  static const int kNumFieldNumber = 1;
-  inline ::google::protobuf::int32 num() const;
-  inline void set_num(::google::protobuf::int32 value);
+  // optional int32 version = 1 [default = 0];
+  inline bool has_version() const;
+  inline void clear_version();
+  static const int kVersionFieldNumber = 1;
+  inline ::google::protobuf::int32 version() const;
+  inline void set_version(::google::protobuf::int32 value);
 
-  // optional int32 channels = 2 [default = 0];
-  inline bool has_channels() const;
-  inline void clear_channels();
-  static const int kChannelsFieldNumber = 2;
-  inline ::google::protobuf::int32 channels() const;
-  inline void set_channels(::google::protobuf::int32 value);
+  // repeated int32 shape = 2;
+  inline int shape_size() const;
+  inline void clear_shape();
+  static const int kShapeFieldNumber = 2;
+  inline ::google::protobuf::int32 shape(int index) const;
+  inline void set_shape(int index, ::google::protobuf::int32 value);
+  inline void add_shape(::google::protobuf::int32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+      shape() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+      mutable_shape();
 
-  // optional int32 height = 3 [default = 0];
-  inline bool has_height() const;
-  inline void clear_height();
-  static const int kHeightFieldNumber = 3;
-  inline ::google::protobuf::int32 height() const;
-  inline void set_height(::google::protobuf::int32 value);
-
-  // optional int32 width = 4 [default = 0];
-  inline bool has_width() const;
-  inline void clear_width();
-  static const int kWidthFieldNumber = 4;
-  inline ::google::protobuf::int32 width() const;
-  inline void set_width(::google::protobuf::int32 value);
-
-  // repeated float data = 5 [packed = true];
+  // repeated float data = 3 [packed = true];
   inline int data_size() const;
   inline void clear_data();
-  static const int kDataFieldNumber = 5;
+  static const int kDataFieldNumber = 3;
   inline float data(int index) const;
   inline void set_data(int index, float value);
   inline void add_data(float value);
@@ -3716,41 +3789,19 @@ class BlobProto : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedField< float >*
       mutable_data();
 
-  // repeated float diff = 6 [packed = true];
-  inline int diff_size() const;
-  inline void clear_diff();
-  static const int kDiffFieldNumber = 6;
-  inline float diff(int index) const;
-  inline void set_diff(int index, float value);
-  inline void add_diff(float value);
-  inline const ::google::protobuf::RepeatedField< float >&
-      diff() const;
-  inline ::google::protobuf::RepeatedField< float >*
-      mutable_diff();
-
   // @@protoc_insertion_point(class_scope:singa.BlobProto)
  private:
-  inline void set_has_num();
-  inline void clear_has_num();
-  inline void set_has_channels();
-  inline void clear_has_channels();
-  inline void set_has_height();
-  inline void clear_has_height();
-  inline void set_has_width();
-  inline void clear_has_width();
+  inline void set_has_version();
+  inline void clear_has_version();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
-  ::google::protobuf::int32 num_;
-  ::google::protobuf::int32 channels_;
-  ::google::protobuf::int32 height_;
-  ::google::protobuf::int32 width_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int32 > shape_;
   ::google::protobuf::RepeatedField< float > data_;
   mutable int _data_cached_byte_size_;
-  ::google::protobuf::RepeatedField< float > diff_;
-  mutable int _diff_cached_byte_size_;
+  ::google::protobuf::int32 version_;
   friend void  protobuf_AddDesc_model_2eproto();
   friend void protobuf_AssignDesc_model_2eproto();
   friend void protobuf_ShutdownFile_model_2eproto();
@@ -4723,45 +4774,15 @@ inline void ParamProto::set_id(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:singa.ParamProto.id)
 }
 
-// repeated int32 shape = 3;
-inline int ParamProto::shape_size() const {
-  return shape_.size();
-}
-inline void ParamProto::clear_shape() {
-  shape_.Clear();
-}
-inline ::google::protobuf::int32 ParamProto::shape(int index) const {
-  // @@protoc_insertion_point(field_get:singa.ParamProto.shape)
-  return shape_.Get(index);
-}
-inline void ParamProto::set_shape(int index, ::google::protobuf::int32 value) {
-  shape_.Set(index, value);
-  // @@protoc_insertion_point(field_set:singa.ParamProto.shape)
-}
-inline void ParamProto::add_shape(::google::protobuf::int32 value) {
-  shape_.Add(value);
-  // @@protoc_insertion_point(field_add:singa.ParamProto.shape)
-}
-inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
-ParamProto::shape() const {
-  // @@protoc_insertion_point(field_list:singa.ParamProto.shape)
-  return shape_;
-}
-inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
-ParamProto::mutable_shape() {
-  // @@protoc_insertion_point(field_mutable_list:singa.ParamProto.shape)
-  return &shape_;
-}
-
 // optional int32 split_threshold = 4 [default = 5000000];
 inline bool ParamProto::has_split_threshold() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
 inline void ParamProto::set_has_split_threshold() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000004u;
 }
 inline void ParamProto::clear_has_split_threshold() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void ParamProto::clear_split_threshold() {
   split_threshold_ = 5000000;
@@ -4779,13 +4800,13 @@ inline void ParamProto::set_split_threshold(::google::protobuf::int32 value) {
 
 // optional int32 partition_dim = 5 [default = -1];
 inline bool ParamProto::has_partition_dim() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+  return (_has_bits_[0] & 0x00000008u) != 0;
 }
 inline void ParamProto::set_has_partition_dim() {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000008u;
 }
 inline void ParamProto::clear_has_partition_dim() {
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void ParamProto::clear_partition_dim() {
   partition_dim_ = -1;
@@ -4803,13 +4824,13 @@ inline void ParamProto::set_partition_dim(::google::protobuf::int32 value) {
 
 // optional int32 owner = 6;
 inline bool ParamProto::has_owner() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
+  return (_has_bits_[0] & 0x00000010u) != 0;
 }
 inline void ParamProto::set_has_owner() {
-  _has_bits_[0] |= 0x00000020u;
+  _has_bits_[0] |= 0x00000010u;
 }
 inline void ParamProto::clear_has_owner() {
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void ParamProto::clear_owner() {
   owner_ = 0;
@@ -4827,13 +4848,13 @@ inline void ParamProto::set_owner(::google::protobuf::int32 value) {
 
 // optional .singa.ParamProto.InitMethod init_method = 7 [default = kConstant];
 inline bool ParamProto::has_init_method() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
 inline void ParamProto::set_has_init_method() {
-  _has_bits_[0] |= 0x00000040u;
+  _has_bits_[0] |= 0x00000020u;
 }
 inline void ParamProto::clear_has_init_method() {
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void ParamProto::clear_init_method() {
   init_method_ = 0;
@@ -4852,13 +4873,13 @@ inline void ParamProto::set_init_method(::singa::ParamProto_InitMethod value) {
 
 // optional float value = 8 [default = 1];
 inline bool ParamProto::has_value() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
+  return (_has_bits_[0] & 0x00000040u) != 0;
 }
 inline void ParamProto::set_has_value() {
-  _has_bits_[0] |= 0x00000080u;
+  _has_bits_[0] |= 0x00000040u;
 }
 inline void ParamProto::clear_has_value() {
-  _has_bits_[0] &= ~0x00000080u;
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline void ParamProto::clear_value() {
   value_ = 1;
@@ -4876,13 +4897,13 @@ inline void ParamProto::set_value(float value) {
 
 // optional float low = 9 [default = -1];
 inline bool ParamProto::has_low() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
+  return (_has_bits_[0] & 0x00000080u) != 0;
 }
 inline void ParamProto::set_has_low() {
-  _has_bits_[0] |= 0x00000100u;
+  _has_bits_[0] |= 0x00000080u;
 }
 inline void ParamProto::clear_has_low() {
-  _has_bits_[0] &= ~0x00000100u;
+  _has_bits_[0] &= ~0x00000080u;
 }
 inline void ParamProto::clear_low() {
   low_ = -1;
@@ -4900,13 +4921,13 @@ inline void ParamProto::set_low(float value) {
 
 // optional float high = 10 [default = 1];
 inline bool ParamProto::has_high() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
+  return (_has_bits_[0] & 0x00000100u) != 0;
 }
 inline void ParamProto::set_has_high() {
-  _has_bits_[0] |= 0x00000200u;
+  _has_bits_[0] |= 0x00000100u;
 }
 inline void ParamProto::clear_has_high() {
-  _has_bits_[0] &= ~0x00000200u;
+  _has_bits_[0] &= ~0x00000100u;
 }
 inline void ParamProto::clear_high() {
   high_ = 1;
@@ -4924,13 +4945,13 @@ inline void ParamProto::set_high(float value) {
 
 // optional float mean = 11 [default = 0];
 inline bool ParamProto::has_mean() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
+  return (_has_bits_[0] & 0x00000200u) != 0;
 }
 inline void ParamProto::set_has_mean() {
-  _has_bits_[0] |= 0x00000400u;
+  _has_bits_[0] |= 0x00000200u;
 }
 inline void ParamProto::clear_has_mean() {
-  _has_bits_[0] &= ~0x00000400u;
+  _has_bits_[0] &= ~0x00000200u;
 }
 inline void ParamProto::clear_mean() {
   mean_ = 0;
@@ -4948,13 +4969,13 @@ inline void ParamProto::set_mean(float value) {
 
 // optional float std = 12 [default = 1];
 inline bool ParamProto::has_std() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
+  return (_has_bits_[0] & 0x00000400u) != 0;
 }
 inline void ParamProto::set_has_std() {
-  _has_bits_[0] |= 0x00000800u;
+  _has_bits_[0] |= 0x00000400u;
 }
 inline void ParamProto::clear_has_std() {
-  _has_bits_[0] &= ~0x00000800u;
+  _has_bits_[0] &= ~0x00000400u;
 }
 inline void ParamProto::clear_std() {
   std_ = 1;
@@ -4972,13 +4993,13 @@ inline void ParamProto::set_std(float value) {
 
 // optional float learning_rate_multiplier = 13 [default = 1];
 inline bool ParamProto::has_learning_rate_multiplier() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
+  return (_has_bits_[0] & 0x00000800u) != 0;
 }
 inline void ParamProto::set_has_learning_rate_multiplier() {
-  _has_bits_[0] |= 0x00001000u;
+  _has_bits_[0] |= 0x00000800u;
 }
 inline void ParamProto::clear_has_learning_rate_multiplier() {
-  _has_bits_[0] &= ~0x00001000u;
+  _has_bits_[0] &= ~0x00000800u;
 }
 inline void ParamProto::clear_learning_rate_multiplier() {
   learning_rate_multiplier_ = 1;
@@ -4996,13 +5017,13 @@ inline void ParamProto::set_learning_rate_multiplier(float value) {
 
 // optional float weight_decay_multiplier = 14 [default = 1];
 inline bool ParamProto::has_weight_decay_multiplier() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
+  return (_has_bits_[0] & 0x00001000u) != 0;
 }
 inline void ParamProto::set_has_weight_decay_multiplier() {
-  _has_bits_[0] |= 0x00002000u;
+  _has_bits_[0] |= 0x00001000u;
 }
 inline void ParamProto::clear_has_weight_decay_multiplier() {
-  _has_bits_[0] &= ~0x00002000u;
+  _has_bits_[0] &= ~0x00001000u;
 }
 inline void ParamProto::clear_weight_decay_multiplier() {
   weight_decay_multiplier_ = 1;
@@ -5016,6 +5037,81 @@ inline void ParamProto::set_weight_decay_multiplier(float value) {
   set_has_weight_decay_multiplier();
   weight_decay_multiplier_ = value;
   // @@protoc_insertion_point(field_set:singa.ParamProto.weight_decay_multiplier)
+}
+
+// optional .singa.BlobProto data = 15;
+inline bool ParamProto::has_data() const {
+  return (_has_bits_[0] & 0x00002000u) != 0;
+}
+inline void ParamProto::set_has_data() {
+  _has_bits_[0] |= 0x00002000u;
+}
+inline void ParamProto::clear_has_data() {
+  _has_bits_[0] &= ~0x00002000u;
+}
+inline void ParamProto::clear_data() {
+  if (data_ != NULL) data_->::singa::BlobProto::Clear();
+  clear_has_data();
+}
+inline const ::singa::BlobProto& ParamProto::data() const {
+  // @@protoc_insertion_point(field_get:singa.ParamProto.data)
+  return data_ != NULL ? *data_ : *default_instance_->data_;
+}
+inline ::singa::BlobProto* ParamProto::mutable_data() {
+  set_has_data();
+  if (data_ == NULL) data_ = new ::singa::BlobProto;
+  // @@protoc_insertion_point(field_mutable:singa.ParamProto.data)
+  return data_;
+}
+inline ::singa::BlobProto* ParamProto::release_data() {
+  clear_has_data();
+  ::singa::BlobProto* temp = data_;
+  data_ = NULL;
+  return temp;
+}
+inline void ParamProto::set_allocated_data(::singa::BlobProto* data) {
+  delete data_;
+  data_ = data;
+  if (data) {
+    set_has_data();
+  } else {
+    clear_has_data();
+  }
+  // @@protoc_insertion_point(field_set_allocated:singa.ParamProto.data)
+}
+
+// -------------------------------------------------------------------
+
+// ParamProtos
+
+// repeated .singa.ParamProto params = 1;
+inline int ParamProtos::params_size() const {
+  return params_.size();
+}
+inline void ParamProtos::clear_params() {
+  params_.Clear();
+}
+inline const ::singa::ParamProto& ParamProtos::params(int index) const {
+  // @@protoc_insertion_point(field_get:singa.ParamProtos.params)
+  return params_.Get(index);
+}
+inline ::singa::ParamProto* ParamProtos::mutable_params(int index) {
+  // @@protoc_insertion_point(field_mutable:singa.ParamProtos.params)
+  return params_.Mutable(index);
+}
+inline ::singa::ParamProto* ParamProtos::add_params() {
+  // @@protoc_insertion_point(field_add:singa.ParamProtos.params)
+  return params_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::singa::ParamProto >&
+ParamProtos::params() const {
+  // @@protoc_insertion_point(field_list:singa.ParamProtos.params)
+  return params_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::singa::ParamProto >*
+ParamProtos::mutable_params() {
+  // @@protoc_insertion_point(field_mutable_list:singa.ParamProtos.params)
+  return &params_;
 }
 
 // -------------------------------------------------------------------
@@ -8436,103 +8532,61 @@ UpdaterProto::mutable_step_lr() {
 
 // BlobProto
 
-// optional int32 num = 1 [default = 0];
-inline bool BlobProto::has_num() const {
+// optional int32 version = 1 [default = 0];
+inline bool BlobProto::has_version() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void BlobProto::set_has_num() {
+inline void BlobProto::set_has_version() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void BlobProto::clear_has_num() {
+inline void BlobProto::clear_has_version() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void BlobProto::clear_num() {
-  num_ = 0;
-  clear_has_num();
+inline void BlobProto::clear_version() {
+  version_ = 0;
+  clear_has_version();
 }
-inline ::google::protobuf::int32 BlobProto::num() const {
-  // @@protoc_insertion_point(field_get:singa.BlobProto.num)
-  return num_;
+inline ::google::protobuf::int32 BlobProto::version() const {
+  // @@protoc_insertion_point(field_get:singa.BlobProto.version)
+  return version_;
 }
-inline void BlobProto::set_num(::google::protobuf::int32 value) {
-  set_has_num();
-  num_ = value;
-  // @@protoc_insertion_point(field_set:singa.BlobProto.num)
-}
-
-// optional int32 channels = 2 [default = 0];
-inline bool BlobProto::has_channels() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void BlobProto::set_has_channels() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void BlobProto::clear_has_channels() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void BlobProto::clear_channels() {
-  channels_ = 0;
-  clear_has_channels();
-}
-inline ::google::protobuf::int32 BlobProto::channels() const {
-  // @@protoc_insertion_point(field_get:singa.BlobProto.channels)
-  return channels_;
-}
-inline void BlobProto::set_channels(::google::protobuf::int32 value) {
-  set_has_channels();
-  channels_ = value;
-  // @@protoc_insertion_point(field_set:singa.BlobProto.channels)
+inline void BlobProto::set_version(::google::protobuf::int32 value) {
+  set_has_version();
+  version_ = value;
+  // @@protoc_insertion_point(field_set:singa.BlobProto.version)
 }
 
-// optional int32 height = 3 [default = 0];
-inline bool BlobProto::has_height() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
+// repeated int32 shape = 2;
+inline int BlobProto::shape_size() const {
+  return shape_.size();
 }
-inline void BlobProto::set_has_height() {
-  _has_bits_[0] |= 0x00000004u;
+inline void BlobProto::clear_shape() {
+  shape_.Clear();
 }
-inline void BlobProto::clear_has_height() {
-  _has_bits_[0] &= ~0x00000004u;
+inline ::google::protobuf::int32 BlobProto::shape(int index) const {
+  // @@protoc_insertion_point(field_get:singa.BlobProto.shape)
+  return shape_.Get(index);
 }
-inline void BlobProto::clear_height() {
-  height_ = 0;
-  clear_has_height();
+inline void BlobProto::set_shape(int index, ::google::protobuf::int32 value) {
+  shape_.Set(index, value);
+  // @@protoc_insertion_point(field_set:singa.BlobProto.shape)
 }
-inline ::google::protobuf::int32 BlobProto::height() const {
-  // @@protoc_insertion_point(field_get:singa.BlobProto.height)
-  return height_;
+inline void BlobProto::add_shape(::google::protobuf::int32 value) {
+  shape_.Add(value);
+  // @@protoc_insertion_point(field_add:singa.BlobProto.shape)
 }
-inline void BlobProto::set_height(::google::protobuf::int32 value) {
-  set_has_height();
-  height_ = value;
-  // @@protoc_insertion_point(field_set:singa.BlobProto.height)
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+BlobProto::shape() const {
+  // @@protoc_insertion_point(field_list:singa.BlobProto.shape)
+  return shape_;
 }
-
-// optional int32 width = 4 [default = 0];
-inline bool BlobProto::has_width() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void BlobProto::set_has_width() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void BlobProto::clear_has_width() {
-  _has_bits_[0] &= ~0x00000008u;
-}
-inline void BlobProto::clear_width() {
-  width_ = 0;
-  clear_has_width();
-}
-inline ::google::protobuf::int32 BlobProto::width() const {
-  // @@protoc_insertion_point(field_get:singa.BlobProto.width)
-  return width_;
-}
-inline void BlobProto::set_width(::google::protobuf::int32 value) {
-  set_has_width();
-  width_ = value;
-  // @@protoc_insertion_point(field_set:singa.BlobProto.width)
+inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+BlobProto::mutable_shape() {
+  // @@protoc_insertion_point(field_mutable_list:singa.BlobProto.shape)
+  return &shape_;
 }
 
-// repeated float data = 5 [packed = true];
+// repeated float data = 3 [packed = true];
 inline int BlobProto::data_size() const {
   return data_.size();
 }
@@ -8560,36 +8614,6 @@ inline ::google::protobuf::RepeatedField< float >*
 BlobProto::mutable_data() {
   // @@protoc_insertion_point(field_mutable_list:singa.BlobProto.data)
   return &data_;
-}
-
-// repeated float diff = 6 [packed = true];
-inline int BlobProto::diff_size() const {
-  return diff_.size();
-}
-inline void BlobProto::clear_diff() {
-  diff_.Clear();
-}
-inline float BlobProto::diff(int index) const {
-  // @@protoc_insertion_point(field_get:singa.BlobProto.diff)
-  return diff_.Get(index);
-}
-inline void BlobProto::set_diff(int index, float value) {
-  diff_.Set(index, value);
-  // @@protoc_insertion_point(field_set:singa.BlobProto.diff)
-}
-inline void BlobProto::add_diff(float value) {
-  diff_.Add(value);
-  // @@protoc_insertion_point(field_add:singa.BlobProto.diff)
-}
-inline const ::google::protobuf::RepeatedField< float >&
-BlobProto::diff() const {
-  // @@protoc_insertion_point(field_list:singa.BlobProto.diff)
-  return diff_;
-}
-inline ::google::protobuf::RepeatedField< float >*
-BlobProto::mutable_diff() {
-  // @@protoc_insertion_point(field_mutable_list:singa.BlobProto.diff)
-  return &diff_;
 }
 
 

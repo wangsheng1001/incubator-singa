@@ -67,7 +67,7 @@ echo Unique JOB_ID is $job_id
 
 # generate job info dir
 # format: job-JOB_ID-YYYYMMDD-HHMMSS
-log_dir=$SINGA_LOG/job-info/job-$job_id-$(date '+%Y%m%d-%H%M%S');
+log_dir=$SINGA_LOG/job-info/job-$job_id-$(date '+%Y%m%d-%H%M%S')
 mkdir -p $log_dir
 echo Record job information to $log_dir
 

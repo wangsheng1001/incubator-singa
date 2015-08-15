@@ -2,17 +2,23 @@
 
 namespace singa {
 
-/**
- * the job and singa_conf arguments are passed by the singa script which is
- * transparent to users
- */
-DEFINE_int32(job, -1, "Unique job ID generated from singa-run.sh");
-DEFINE_string(singa_conf, "conf/singa.conf", "Global config file");
-
 void Driver::Init(int argc, char **argv) {
   google::InitGoogleLogging(argv[0]);
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
-  job_id_ = FLAGS_job;
+
+  //  unique job ID generated from singa-run.sh, passed in as "-singa_job <id>"
+  int job_id_pos = ArgPos(argc, argv, "-singa_job");
+  CHECK_NE(job_id_pos, -1);
+  job_id_ = atoi(argv[job_id_pos]);
+
+  //  global signa conf passed by singa-run.sh as "-singa_conf <path>"
+  int singa_conf_pos = ArgPos(argc, argv, "-singa_conf");
+  CHECK_NE(singa_conf_pos, -1);
+  singa_conf_.insert(0, argv[singa_conf_pos]);
+
+  //  job conf passed by users as "-conf <path>"
+  int job_conf_pos = ArgPos(argc, argv, "-conf");
+  CHECK_NE(job_conf_pos, -1);
+  job_conf_.insert(0, argv[job_conf_pos]);
 
   // register layers
   RegisterLayer<BridgeDstLayer>(kBridgeDst);
@@ -82,11 +88,10 @@ int Driver::RegisterWorker(int type) {
 }
 
 void Driver::Submit(bool resume, const JobProto& jobConf) {
-  SingaProto singaConf;
-  ReadProtoFromTextFile(FLAGS_singa_conf.c_str(), &singaConf);
-  if (singaConf.has_log_dir())
-    SetupLog(singaConf.log_dir(), std::to_string(FLAGS_job)
-        + "-" + jobConf.name());
+  SingaProto conf;
+  ReadProtoFromTextFile(singa_conf_.c_str(), &conf);
+  if (conf.has_log_dir())
+    SetupLog(conf.log_dir(), std::to_string(job_id_) + "-" + jobConf.name());
   if (jobConf.num_openblas_threads() != 1)
     LOG(WARNING) << "openblas with "
       << jobConf.num_openblas_threads() << " threads";
@@ -96,7 +101,7 @@ void Driver::Submit(bool resume, const JobProto& jobConf) {
   job.CopyFrom(jobConf);
   job.set_id(job_id_);
   Trainer trainer;
-  trainer.Start(resume, singaConf, &job);
+  trainer.Start(resume, conf, &job);
 }
 
 }  // namespace singa

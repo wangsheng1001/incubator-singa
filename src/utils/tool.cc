@@ -122,15 +122,15 @@ int cleanup() {
 
 int main(int argc, char **argv) {
   std::string usage = "Usage: singatool <command> <args>\n"
-      " getlogdir        :  show log dir in global config\n"
-      " create           :  generate a unique job id\n"
-      " genhost JOB_CONF :  generate a host list\n"
-      " list             :  list running singa jobs\n"
-      " listall          :  list all singa jobs\n"
-      " view JOB_ID      :  view procs of a singa job\n"
-      " remove JOB_ID    :  remove a job path in zookeeper\n"
-      " removeall        :  remova all job paths in zookeeper\n"
-      " cleanup          :  clean all singa data in zookeeper\n";
+      " getlogdir          :  show log dir in global config\n"
+      " create             :  generate a unique job id\n"
+      " genhost <job conf> :  generate a host list\n"
+      " list               :  list running singa jobs\n"
+      " listall            :  list all singa jobs\n"
+      " view <job id>      :  view procs of a singa job\n"
+      " remove <job id>    :  remove a job path in zookeeper\n"
+      " removeall          :  remova all job paths in zookeeper\n"
+      " cleanup            :  clean all singa data in zookeeper\n";
   // set logging level to ERROR and log to STDERR only
   google::LogToStderr();
   google::SetStderrLogging(google::ERROR);

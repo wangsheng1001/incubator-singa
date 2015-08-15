@@ -30,12 +30,12 @@ int main(int argc, char **argv) {
 
   //  if -resume in argument list, set resume to true; otherwise false
   int resume_pos = singa::ArgPos(argc, argv, "-resume");
-  bool resume = resume_pos != -1;
+  bool resume = (resume_pos != -1);
+
   //  users can register new subclasses of layer, updater, etc.
 
-  //  prepare job conf;
-  singa::JobProto jobConf;
-  singa::ReadProtoFromTextFile(driver.job_conf().c_str(), &jobConf);
+  //  get the job conf, and custmize it if need
+  singa::JobProto jobConf = driver.job_conf();
 
   //  submit the job
   driver.Submit(resume, jobConf);

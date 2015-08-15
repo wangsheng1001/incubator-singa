@@ -81,12 +81,12 @@ class Driver {
    * @return job conf path which is passed by users at the command line. It
    * should at least contains the cluster configuration.
    */
-  inline const string& job_conf() const { return job_conf_; }
+  inline JobProto job_conf() const { return job_conf_; }
 
  private:
   int job_id_;
-  std::string singa_conf_;
-  std::string job_conf_;
+  JobProto job_conf_;
+  SingaProto singa_conf_;
 };
 
 }  // namespace singa

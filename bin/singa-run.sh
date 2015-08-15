@@ -38,13 +38,11 @@ while [ $# != 0 ]; do
   if [ $1 == "-exec" ]; then
     shift
     exe=$1
+  elif [ $1 == "-conf" ]; then
+    shift
+    conf=$1
   else
     args="$args $1"
-    if [ $1 == "-conf" ]; then
-      shift
-      conf=$1
-      args="$args $1"
-    fi
   fi
   shift
 done
@@ -83,7 +81,9 @@ host_file=$log_dir/job.hosts
 ./singatool genhost $job_conf 1>$host_file || exit 1
 
 # set command to run singa
-singa_run="$exe $args -singa_job $job_id" 
+singa_run="$exe $args -conf $job_conf \
+            -singa_conf $SINGA_HOME/conf/singa.conf \
+            -singa_job $job_id" 
 singa_sshrun="cd $SINGA_HOME; $singa_run"
 
 # ssh and start singa processes

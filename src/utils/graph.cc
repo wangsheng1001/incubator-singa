@@ -72,16 +72,13 @@ Graph::~Graph() {
     delete node;
 }
 
-void Graph::AddNode(Node* node) {
+Node* Graph::AddNode(const string& name, const string& origin, int id,
+                    void* proto) {
+  Node* node = new Node(name, origin, id, proto);
   nodes_.push_back(node);
   CHECK(name2node_.find(node->name) == name2node_.end())
     << "node " << node->name << " already exists";
   name2node_[node->name] = node;
-}
-
-Node* Graph::AddNode(const string& name) {
-  Node* node = new Node(name);
-  AddNode(node);
   return node;
 }
 
@@ -133,8 +130,7 @@ string Graph::ToJson(const map<string, string>& info) const {
     string name = node->name;
     string color = colors[(node->partition_id)%colors.size()];
     string shape;
-    string origin = node->origin;
-    if (origin.find("##") != string::npos)
+    if (node->origin.find("##") != string::npos)
       shape = shapes[1];
     else
       shape = shapes[0];
@@ -227,10 +223,10 @@ void Graph::Sort() {
       visiting_nodes.push(node);
     }
   }
-  for (auto node : nodes_) {
-    LOG(INFO) << "nodes: " << node->name;
-  }
-  LOG(INFO) << "finish printing nodes ";
+  // for (auto node : nodes_) {
+  //   LOG(INFO) << "nodes: " << node->name;
+  // }
+  // LOG(INFO) << "finish printing nodes ";
   CHECK_EQ(nodes_.size(), n);
 }
 

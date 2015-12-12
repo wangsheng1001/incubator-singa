@@ -41,6 +41,9 @@ class SplitLayer : public ConnectionLayer {
   void ComputeGradient(int flag, const vector<Layer*>& srclayers) override;
   const Blob<float>& grad(const Layer* from) const override;
   Blob<float>* mutable_grad(const Layer* from) override;
+
+ private:
+  int num_splits = 0;
 };
 
 }  // namespace singa

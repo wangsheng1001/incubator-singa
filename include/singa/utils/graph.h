@@ -86,8 +86,8 @@ class Graph {
   inline Node* node(const std::string& name) const {
     return name2node_.at(name);
   }
-  void AddNode(Node* node);
-  Node* AddNode(const std::string& name);
+  Node* AddNode(const std::string& name, const std::string& origin, int id,
+                void* proto);
   void AddEdge(Node* srcnode, Node* dstnode);
   void AddEdge(const std::string& src, const std::string& dst);
   void RemoveEdge(Node* src, Node* dst);

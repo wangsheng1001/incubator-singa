@@ -37,6 +37,9 @@ class ConcateLayer : public ConnectionLayer {
   void Setup(const LayerProto& proto, const vector<Layer*>& srclayers) override;
   void ComputeFeature(int flag, const vector<Layer*>& srclayers) override;
   void ComputeGradient(int flag, const vector<Layer*>& srclayers) override;
+  ConnectionType src_neuron_connection(int k) const override {
+    return kOneToAll;
+  }
 };
 
 }  // namespace singa

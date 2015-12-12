@@ -48,6 +48,7 @@
 #include "singa/neuralnet/neuron_layer/argsort.h"
 #include "singa/neuralnet/neuron_layer/convolution.h"
 #include "singa/neuralnet/neuron_layer/dropout.h"
+#include "singa/neuralnet/neuron_layer/dummy.h"
 #include "singa/neuralnet/neuron_layer/inner_product.h"
 #include "singa/neuralnet/neuron_layer/lrn.h"
 #include "singa/neuralnet/neuron_layer/pooling.h"
@@ -96,6 +97,7 @@ void Driver::Init(int argc, char **argv) {
   RegisterLayer<CPoolingLayer, int>(kCPooling);
   RegisterLayer<ConcateLayer, int>(kConcate);
   RegisterLayer<DropoutLayer, int>(kDropout);
+  RegisterLayer<DummyLayer, int>(kDummy);
   RegisterLayer<EuclideanLossLayer, int>(kEuclideanLoss);
   RegisterLayer<InnerProductLayer, int>(kInnerProduct);
   RegisterLayer<LabelLayer, int>(kLabel);

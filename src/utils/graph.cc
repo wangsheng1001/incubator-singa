@@ -223,10 +223,10 @@ void Graph::Sort() {
       visiting_nodes.push(node);
     }
   }
-  for (auto node : nodes_) {
-    LOG(INFO) << "nodes: " << node->name;
-  }
-  LOG(INFO) << "finish printing nodes ";
+  // for (auto node : nodes_) {
+  //   LOG(INFO) << "nodes: " << node->name;
+  // }
+  // LOG(INFO) << "finish printing nodes ";
   CHECK_EQ(nodes_.size(), n);
 }
 

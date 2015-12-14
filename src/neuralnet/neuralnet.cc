@@ -219,8 +219,8 @@ NetProto NeuralNet::AddModelSplitLayers(const NetProto& netproto) {
                  ->set_num_splits(-dst_count[layer.name()]);
     }
   }
-  LOG(INFO) << "NeuralNet Config After Model Split is\n"
-            << net_w_split.DebugString();
+  // LOG(INFO) << "NeuralNet Config After Model Split is\n"
+  //           << net_w_split.DebugString();
   return net_w_split;
 }
 
@@ -396,7 +396,7 @@ Graph* NeuralNet::CreateGraph(const NetProto& netproto, int npartitions) {
     }
   }
   graph->Sort();
-  DLOG(INFO) << "Pure graph structure\n" << graph->ToJson();
+  // DLOG(INFO) << "Pure graph structure\n" << graph->ToJson();
   return graph;
 }
 
@@ -415,7 +415,6 @@ void NeuralNet::CreateNetFromGraph(Graph* graph) {
     for (Node* src : node->srcnodes)
       src_map_[layer].push_back(name2layer(src->name));
   }
-
   // setup layers
   int paramid = 0;
   map<string, string> layerinfo;
@@ -437,7 +436,7 @@ void NeuralNet::CreateNetFromGraph(Graph* graph) {
     if (layer->partition_dim() == 0)
       share_param_layers[node->origin].push_back(layer);
   }
-  LOG(INFO) << "Neural net structure\n"  << graph->ToJson(layerinfo);
+  LOG(INFO) << "Neural Net Structure\n"  << graph->ToJson(layerinfo);
   // create map from param name to param ptr
   std::unordered_map<string, Param*> name2param;
   for (auto layer : layers_) {

@@ -208,8 +208,8 @@ void SyncedMemory::to_gpu() {
 
 template <typename Dtype>
 void Blob<Dtype>::Reshape(const std::vector<int>& shape) {
-  count_ = 1;
   shape_ = shape;
+  count_ = shape.size() ? 1 : 0;
   for (size_t i = 0; i < shape.size(); ++i) {
     CHECK(shape[i]);
     count_ *= shape[i];

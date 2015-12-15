@@ -347,10 +347,9 @@ Graph* NeuralNet::CreateGraph(const NetProto& netproto, int npartitions) {
   // connect layers, add bridge layers if partition id is different
   for (const LayerProto& origin_layer : net_w_connection.layer()) {
     vector<Node*> dst_nodes = name2nodes[origin_layer.name()];
-    ConnectionType connection = srcNeuronConnection(origin_layer);
     for (const string& src_name : origin_layer.srclayers()) {
       vector<Node*> src_nodes = name2nodes[src_name];
-      if (connection == kOneToOne) {
+      if (origin_layer.type() != kConcate) {
         for (size_t i = 0; i < src_nodes.size(); ++i) {
           CHECK_EQ(src_nodes[i]->partition_id, i);
           CHECK_EQ(dst_nodes[i]->partition_id, i);
@@ -420,9 +419,9 @@ void NeuralNet::CreateNetFromGraph(Graph* graph) {
   map<string, string> layerinfo;
   map<string, vector<Layer*>> share_param_layers;
   for (Node* node : graph->nodes()) {
+    LOG(INFO) << "constructing graph: " << node->name;
     auto layer = name2layer(node->name);
     layer->Setup(*(static_cast<LayerProto*>(node->proto)), srclayers(layer));
-    LOG(INFO) << "constructing graph: " << layer->name();
     layerinfo[layer->name()] = IntVecToString(layer->data(nullptr).shape());
     string param_name = "$";
     for (auto param : layer->GetParams()) {

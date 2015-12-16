@@ -142,7 +142,7 @@ void NeuralNet::Load(const vector<string>& paths,
   }
 }
 
-void NeuralNet::ShareParamsFrom(NeuralNet* other) {
+void NeuralNet::ShareParamsFrom(NeuralNet* other, bool cpu_only) {
   for (auto& layer : layers_) {
     auto otherlayer = other->name2layer(layer->name());
     if (otherlayer != nullptr) {

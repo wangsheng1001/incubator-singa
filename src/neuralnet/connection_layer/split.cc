@@ -37,7 +37,7 @@ void SplitLayer::Setup(const LayerProto& conf,
   CHECK_EQ(srclayers.size(), 1);
   Layer::Setup(conf, srclayers);
   data_.Reshape(srclayers[0]->data(this).shape());
-  data_.ShareData(srclayers[0]->data(this));
+  data_.ShareData(srclayers[0]->mutable_data(this));
   num_splits = conf.split_conf().num_splits();
   CHECK_GT(num_splits, 0);
   // add num_splits-1 more grad blobs
@@ -57,12 +57,9 @@ void SplitLayer::ComputeGradient(int flag, const vector<Layer*>& srclayers) {
   CHECK_EQ(srclayers.size(), 1);
   // aggregate all gradients to grad_[0]
   for (int i = 1; i < num_splits; ++i)
-    AXPY<float>(cpu, 1.0, *gradvec_[i], gradvec_[0]);
-//  for (int i = 1; i < num_splits; ++i)
-//    for (int j = 0; j < gradvec_[0]->count(); ++j)
-//      gradvec_[0]->mutable_cpu_data()[j] += gradvec_[i]->cpu_data()[j];
+    AXPY<float>(1.0, *gradvec_[i], gradvec_[0]);
   // copy grad_[0] to srclayer's grad
-  srclayers[0]->mutable_grad(this)->CopyFrom(*gradvec_[0]);
+  Copy(*gradvec_[0], srclayers[0]->mutable_grad(this));
 }
 
 const Blob<float>& SplitLayer::grad(const Layer* from) const {

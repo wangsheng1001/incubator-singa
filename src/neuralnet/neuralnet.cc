@@ -252,14 +252,33 @@ NetProto NeuralNet::AddPartitionConnectionLayers(const NetProto& netproto,
    *     0    |     1    |     OneToOne    | Slice -> Concate 
    *     1    |     0    |     OneToAll    | Slice -> Concate 
    *     0    |     1    |     OneToAll    | Split -> Concate 
-   *     1    |     1    |     OneToAll    | Split -> Concate 
+   *     1    |     1    |     OneToAll    | Split -> Concate
+   * (include non-partitioned cases)
+   *    -1    |    -1    |     OneToOne    | Direct Connection
+   *    -1    |    -1    |     OneToAll    | Direct Connection
+   *     0    |    -1    |     OneToOne    | Concate 
+   *     0    |    -1    |     OneToAll    | Concate 
+   *     1    |    -1    |     OneToOne    | Concate 
+   *     1    |    -1    |     OneToAll    | Concate 
+   *    -1    |     0    |     OneToOne    | Slice 
+   *    -1    |     0    |     OneToAll    | Slice 
+   *    -1    |     1    |     OneToOne    | Slice 
+   *    -1    |     1    |     OneToAll    | Split 
    *
    * Logic:
-   * dst_pdim = 1 && OneToAll ?
-   *   (YES) Split -> Concate
-   *   (NO)  src_pdim = dst_pdim ?
-   *           (YES) Direct Connection
-   *           (NO)  Slice -> Concate
+   * IF src_pdim = -1 OR dst_pdim = -1 ?
+   *   - (YES) IF src_pdim = AND dst_pdim = -1 ?
+   *             - (YES) Direct Connection
+   *             - (NO)  IF dst_pdim = -1 ?
+   *                       - (YES) Concate
+   *                       - (NO)  IF dst_pim = 1 AND OneToAll ?
+   *                                 - (YES) Split
+   *                                 - (NO)  Slice
+   *   - (NO)  IF dst_pdim = 1 AND OneToAll ?
+   *             - (YES) Split -> Concate
+   *             - (NO)  IF src_pdim = dst_pdim ?
+   *                       - (YES) Direct Connection
+   *                       - (NO)  Slice -> Concate
    */
    for (const LayerProto& origin_layer : netproto.layer()) {
      LayerProto* dst_layer = name2proto[origin_layer.name()];

@@ -39,17 +39,22 @@ package singa;
 //
 message JobProto {
   // job name, e.g., "cifar10-dcnn", "mnist-mlp"
-  required string name = 1;
+  //required string name = 1;
+  optional string name = 1;
   // neural net consits of a set of connected layers
-  required NetProto neuralnet = 3;
+  //required NetProto neuralnet = 3;
+  optional NetProto neuralnet = 3;
   // algorithm for computing gradients over one mini-batch
-  required AlgProto train_one_batch = 5;
+  //required AlgProto train_one_batch = 5;
+  optional AlgProto train_one_batch = 5;
   // configuration of SGD updater, including learning rate, etc.
-  required UpdaterProto updater = 7;
+  //required UpdaterProto updater = 7;
+  optional UpdaterProto updater = 7;
   // cluster toplogy conf
   required ClusterProto cluster = 9;
   // total num of steps for training
-  required int32 train_steps = 16;
+  //required int32 train_steps = 16;
+  optional int32 train_steps = 16;
   // frequency of displaying training info
   optional int32 disp_freq = 17 [default = 0];
   // GPU device IDs for use, if fewer than workers per procs, some workers run
@@ -148,7 +153,8 @@ message ClusterProto {
   optional int32 nworkers_per_procs = 5 [default = 1];
   optional int32 nservers_per_procs = 6 [default = 1];
   // local workspace for checkpoint files and vis files
-  required string workspace = 10;
+  //required string workspace = 10;
+  optional string workspace = 10;
 
   // servers and workers in different processes?
   optional bool server_worker_separate = 20 [default = false];

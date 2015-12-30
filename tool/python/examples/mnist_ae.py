@@ -18,7 +18,6 @@ m = Sequential('autoencoder', sys.argv)
 hid_dim = [1000, 500, 250, 30]
 m.add(Autoencoder(hid_dim, out_dim=784, activation='sigmoid', param_share=True))
 
-
 agd = AdaGrad(lr=0.01)
 topo = Cluster(workspace)
 m.compile(loss='mean_squared_error', optimizer=agd, cluster=topo)

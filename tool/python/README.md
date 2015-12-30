@@ -13,10 +13,8 @@
         |-- datasets 
             |-- cifar10.py 
             |-- mnist.py 
-            |-- rbm.py 
-            |-- ae.py 
     |-- examples 
-        |-- cifar10_cnn.py, mnist_mlp.py, , mnist_rbm1.py, rnnlm_usermodel.py, etc. 
+        |-- cifar10_cnn.py, mnist_mlp.py, , mnist_rbm1.py, mnist_ae.py, etc. 
 
 ### How to Run
 ```
@@ -24,11 +22,11 @@ bin/singa-run.sh -exe user_main.py -conf cluster.conf
 ```
 The python code, i.e., `user_main.py`, would create the JobProto object and pass it to Driver::Train.
 Currently, ./bin/singa-run.sh needs to get the cluster topology, hence we still need to pass a `cluster.conf` to it.
-The cluster.conf has the configuration for a JobProto with all other fields empty except the cluster field.
+The `cluster.conf` has the configuration for a JobProto with all other fields empty except the cluster field.
 
 Note that 'workspace' field in ClusterProto can be set in either (i) cluster.conf or (ii) python code.
 
-#### Examples
+#### Example
 ```
 cd SINGA_ROOT
 bin/singa-run.sh -exe tool/python/examples/cifar10_cnn.py -conf tool/python/examples/cluster.conf
@@ -46,15 +44,6 @@ bin/singa-run.sh -exe tool/python/examples/cifar10_cnn.py -conf tool/python/exam
 * Dropout
 * RBM
 * Autoencoder
-
-#### for user defined layers (IN PROGRESS) 
-
-The following classes are designed to construct user-defined layers for RNNLM example.
-
-* Embedding
-* RNNLM
-* UserLossRNNLM
-
 
 ### Model class
 
@@ -91,6 +80,14 @@ fit() and evaluate() return `result`, a dictionary containing
 	* 'loss' for loss
 	* 'ppl' for ppl
 	* 'se' for squred error   
+
+#### To run Singa on GPU
+
+Users need to set a list of gpu ids to `device` field in fit() or evaluate(). 
+```
+gpu_id = [0]
+m.fit(X_train, nb_epoch=100, with_test=True, device=gpu_id)
+```
 
 #### Other classes
 
@@ -276,13 +273,13 @@ Users need to set parameter and initial values. For example,
 		* mean = (float)
 		* std = (float)
 
-* Weight (w_param) is gaussian with mean=0, std=0.01 at default
+* Weight (`w_param`) is gaussian with mean=0, std=0.01 at default
 
-* Bias (b_param) is constant with value=0 at default
+* Bias (`b_param`) is constant with value=0 at default
 
 * How to update the parameter fields
-	* for updating Weight, put 'w_' in front of field name
-	* for updating Bias, put 'b_' in front of field name
+	* for updating Weight, put `w_` in front of field name
+	* for updating Bias, put `b_` in front of field name
 
 Several ways to set Parameter values
 ```

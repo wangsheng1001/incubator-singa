@@ -21,12 +21,13 @@
 
 #include "singa/utils/cluster_rt.h"
 
-#include <glog/logging.h>
+// #include <glog/logging.h>
 #include <google/protobuf/text_format.h>
 #include <stdlib.h>
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include "singa/utils/logging.h"
 #include "singa/proto/job.pb.h"
 
 #ifdef USE_ZOOKEEPER
@@ -39,7 +40,7 @@ using std::vector;
 
 namespace singa {
 
-ClusterRuntime* ClusterRuntime::Create(const std::string&host, int job_id) {
+ClusterRuntime* ClusterRuntime::Create(const std::string& host, int job_id) {
 #ifdef USE_ZOOKEEPER
   return new ZKClusterRT(host, job_id);
 #else

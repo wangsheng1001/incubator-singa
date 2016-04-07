@@ -124,6 +124,7 @@ SINGA_HDRS := include/singa.h \
               include/utils/tokenizer.h \
               include/utils/image_transform.h \
               include/utils/job_manager.h \
+              include/utils/logging.h \
               include/server.h \
               include/worker.h \
               include/stub.h \
@@ -164,7 +165,8 @@ TEST_SRCS := include/gtest/gtest_main.cc \
              src/test/test_record_input_layer.cc \
              src/test/test_csv_input_layer.cc \
              src/test/test_gru_layer.cc \
-             src/test/test_unrolling.cc
+             src/test/test_unrolling.cc \
+             src/test/test_logging.cc
 
 #EXTRA_PROGRAMS = $(PROGS)
 EXTRA_PROGRAMS = singatest test

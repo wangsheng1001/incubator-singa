@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+#ifndef SINGA_CORE_MEMORY_H_
+#define SINGA_CORE_MEMORY_H_
 
 namespace singa {
 
@@ -28,3 +30,4 @@ class VirtualMemory {
 };
 
 }  /* singa */
+#endif

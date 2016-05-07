@@ -15,6 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#ifndef SINGA_CORE_SCHEDULER_H_
+#define SINGA_CORE_SCHEDULER_H_
 
 
 namespace singa {
@@ -28,3 +30,4 @@ class Scheduler {
 };
 
 }  /* singa */
+#endif

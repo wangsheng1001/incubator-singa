@@ -16,22 +16,9 @@
  * limitations under the License.
  */
 
-package singa;
+#include "singa/core/math.h"
 
-//syntax = "proto2";
+namespace singa {
 
-enum DataType {
-  kFloat32 = 0;
-  kFloat16 = 1;
-  kInt = 2;
-  kChar = 3;
-  kNumDataType = 4;
-}
 
-enum LibType {
-  kCpp = 0;
-  kCuda = 1;
-  kOpencl = 2;
-  kCudnn = 3;
-  kNumLibType = 4;
 }

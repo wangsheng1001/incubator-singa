@@ -15,13 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
+#include "singa/core/device.h"
 namespace singa {
+CppDevice hostDeviceSingleton(-1, 1);
 
+void CppDevice::Exec(int operation, int executor) {
+}
 
+void* CppDevice::Malloc(int size) {
+  return malloc(size);
+}
 
+void CppDevice::Free(void* ptr) {
+  free(ptr);
+}
 
-
-
-}  /* singa */
+}

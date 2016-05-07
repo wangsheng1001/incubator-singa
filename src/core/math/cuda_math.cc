@@ -16,22 +16,34 @@
  * limitations under the License.
  */
 
-package singa;
+#include "singa/core/math.h"
+#include "singa/core/common.h"
 
-//syntax = "proto2";
 
-enum DataType {
-  kFloat32 = 0;
-  kFloat16 = 1;
-  kInt = 2;
-  kChar = 3;
-  kNumDataType = 4;
+namespace singa {
+namespace math {
+
+#ifdef USE_CUDA
+template<>
+void Add<float, lib::Cuda>(int count, const Blob* lhs, const Blob* rhs,
+                        Blob* ret, Context* ctx) {
+  cublasSetStream(ctx->handle, ctx->stream);
+  cublasScopy(ctx->handle, count, lhs->data(), 1, ret->mutable_data(), 1);
+  cublasSaxpy(ctx->handle, 1.0f, rhs->data(), 1, ret->mutable_data(), 1);
 }
 
-enum LibType {
-  kCpp = 0;
-  kCuda = 1;
-  kOpencl = 2;
-  kCudnn = 3;
-  kNumLibType = 4;
+#ifdef USE_CUDNN
+template<>
+void Conv<float, lib::Cudnn>(const OpConf *conf,
+          const Blob* input,
+          const Blob* W,
+          const Blob* b,
+          Blob* ret,
+          Context* ctx) {
+  // auto conv_conf = conf->CastTo<ConvConf>();
+  // conv op
 }
+
+#endif
+#endif
+}}

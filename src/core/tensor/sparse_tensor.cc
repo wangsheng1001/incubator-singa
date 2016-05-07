@@ -15,23 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "singa/core/tensor.h"
+namespace singa {
 
-package singa;
 
-//syntax = "proto2";
 
-enum DataType {
-  kFloat32 = 0;
-  kFloat16 = 1;
-  kInt = 2;
-  kChar = 3;
-  kNumDataType = 4;
-}
 
-enum LibType {
-  kCpp = 0;
-  kCuda = 1;
-  kOpencl = 2;
-  kCudnn = 3;
-  kNumLibType = 4;
 }

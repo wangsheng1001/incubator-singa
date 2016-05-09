@@ -52,4 +52,6 @@ Makefile.in
 thirdparty/*
 !thirdparty/install.sh
 !include/singa
+!include/singa/utils/logging.h
+!src/utils/logging.cc
 doc/
